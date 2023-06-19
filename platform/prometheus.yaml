@@ -1,13 +1,23 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: prometheus-repository
+  namespace: monitoring
+spec:
+  interval: 1m
+  url: https://github.com/prometheus-community/helm-charts
+---
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
-  name: azure-arc-sample
+  name: prometheus
   namespace: monitoring
 spec:
+  interval: 1m
   releaseName: prometheus
   chart:
-    git: https://github.com/prometheus-community/helm-charts
-    ref: master
-    path: charts/kube-prometheus-stack
-  values:
-    serviceName: prometheus
+    spec:
+      chart: charts/kube-prometheus-stack
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-repository
