@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: carpool-api
+  namespace: default
   labels:
     app: carpool-api
 spec:
