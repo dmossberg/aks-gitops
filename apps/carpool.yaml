@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carpool-api
+  labels:
+    app: carpool-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carpool-api
+  template:
+    metadata:
+      labels:
+        app: carpool-api
+    spec:
+      containers:
+      - name: carpool-api
+        image: dockerforall.azurecr.io/samplecarpooling:20230619104245
+        ports:
+        - containerPort: 9091
+      # imagePullSecrets:
+      # - name: dockerforall
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carpool-svc
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 9091
+  selector:
+    app: carpool-api
